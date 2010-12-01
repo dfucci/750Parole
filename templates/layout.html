@@ -1,0 +1,41 @@
+<!doctype html>
+<html>
+<title>750 parole</title>
+<head>
+<script type="text/javascript">
+
+window.onload = function(evt) {
+    document.getElementById('text').disabled = {{ sbloccato }};
+    document.getElementById('bottone').disabled = {{ sbloccato }};
+    document.getElementById('text').value = "{{ text }}"; 
+}
+
+//Javascript
+//text is the textbox.value, doc is the textbox to display the count in
+function word_count(text, doc)
+{
+     text = text.replace(/^\s*|\s*$/g,''); //removes whitespace from front and end
+     var count_array = text.split(" ");
+     document.getElementById('text2').innerHTML = count_array.length;
+}
+
+</script>
+</head>
+<div class=page>
+    <h1>Le tue 750 parole di oggi</h1>
+    <div class=metanav>
+    {% for message in get_flashed_messages() %}
+        <div class=flash>{{ message }} </div>
+        {% endfor %}
+    </div>
+    {%  block body %}
+    <form action="{{ url_for('add_entry') }}" method = post class = add-entry>
+        <dl>
+            <dd><textarea id='text' name=text rows=25 cols=160
+                onkeyup="word_count(this.value, text2)" ></textarea>
+            <dd><input id='bottone' type=submit value=Inserisci>
+        <dl>
+    </form>
+    <div id='text2'></div> 
+    {% endblock %}
+</html>
