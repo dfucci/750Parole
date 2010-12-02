@@ -14,6 +14,19 @@ def word_count(s):
     c = len(string.split(s))
     return c
 
+def join_words():
+    a = ' '.join([g.db.get(w) for w in g.db.keys()])
+    return a
+
+def create_dic(wordlist):
+    d = dict([(w, wordlist.count(w)) for w in wordlist])
+    return d
+
+@app.route('/cloud')
+def show_cloud():
+    dizionario = create_dic(join_words())
+    return render_template('cloud.html', dict=dizionario)
+
 @app.before_request
 def before_request():
     g.today = date.today()
