@@ -21,10 +21,37 @@ def join_words():
 def create_dic(wordlist):
     d = dict([(w, wordlist.count(w)) for w in wordlist])
     return d
+#crea un dizionario con la dimensione in percentuale dei relativi tag
+# vedi http://blog.jeremymartin.name/2008/03/efficient-tag-cloud-algorithm.html
+def size(element):
+    min=maxmin_dict(dictionary, 'min')
+    max=maxmin_dict(dictionary, 'max')
+    max_percent=15
+    min_percent=1
+    multiplier=(max_percent-min_percent)/(max-min)
+    # element_size=min_percent+((max-(max-(element-min)))*(max_percent-min_percent)/(max-min)
+
+def tag_cloud(dictionary):
+    tag_dict=dict([(dictionary[i], size(dictionary[i])) for i in dictionary])
+    return tag_dict
+#calcola per ogni elemento del dizionario la dimensione del tag nel cloud
+def maxmin_dict(dictionary, mode):
+    if (mode == 'max'):
+        max = -1
+        for k in dictionary.keys():
+            if (dictionary[k] > max):
+                max=dictionary[k]
+        return max
+    else:
+        min = sys.max
+        for k in dictionary.keys():
+            if (dictionary[k] < min):
+                min = dictionary[k]
+        return min
 
 @app.route('/cloud')
 def show_cloud():
-    dizionario = create_dic(join_words())
+    dizionario = tag_cloud(create_dic(join_words()))
     return render_template('cloud.html', dict=dizionario)
 
 @app.before_request
